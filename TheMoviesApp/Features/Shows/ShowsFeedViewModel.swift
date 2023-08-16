@@ -19,9 +19,16 @@ final class ShowsFeedViewModel {
     private(set) var tvShows = BehaviorSubject<[TVShow]>(value: [])
     private(set) var selectedGenre: Genre?
 
-    let type: ShowType
     private let repository: any ShowsRepositoryProtocol
+
+    private var loadingShows = false
+    private var currentPage = 1
+    private var totalShowsLoaded = 0
+    private var lastMoviesAdded: [Movie] = []
+    private var lastTVShowsAdded: [TVShow] = []
     private var disposeBag = DisposeBag()
+
+    let type: ShowType
 
     init(repository: any ShowsRepositoryProtocol,
          type: ShowType) {
@@ -45,6 +52,13 @@ final class ShowsFeedViewModel {
     }
 
     private func loadShows() {
+        // If it is initial load or refresh, remove all shows
+        if currentPage == 1 {
+            lastMoviesAdded.removeAll()
+            lastTVShowsAdded.removeAll()
+        }
+
+        loadingShows = true
         switch type {
         case .movie:
             loadMovies()
@@ -55,23 +69,30 @@ final class ShowsFeedViewModel {
 
     private func loadMovies() {
         guard let genreId = selectedGenre?.id else { return }
-
-        repository.getMovies(genreId: genreId)
+        repository.getMovies(page: currentPage, genreId: genreId)
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] moviesModel in
                 guard let self else { return }
-                self.movies.onNext(moviesModel.results)
+
+                self.lastMoviesAdded.append(contentsOf: moviesModel.results)
+                self.movies.onNext(lastMoviesAdded)
+                self.totalShowsLoaded = lastMoviesAdded.count
+                self.loadingShows = false
             }).disposed(by: disposeBag)
     }
 
     private func loadTVShows() {
         guard let genreId = selectedGenre?.id else { return }
 
-        repository.getTVShows(genreId: genreId)
+        repository.getTVShows(page: currentPage, genreId: genreId)
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] showsModel in
                 guard let self else { return }
-                self.tvShows.onNext(showsModel.results)
+
+                self.lastTVShowsAdded.append(contentsOf: showsModel.results)
+                self.tvShows.onNext(lastTVShowsAdded)
+                self.totalShowsLoaded = lastTVShowsAdded.count
+                self.loadingShows = false
             }).disposed(by: disposeBag)
     }
 }
@@ -79,6 +100,15 @@ final class ShowsFeedViewModel {
 extension ShowsFeedViewModel {
     func genreSelected(_ genre: Genre) {
         selectedGenre = genre
+        currentPage = 1
         loadShows()
+    }
+
+    func willDisplayShowAtIndex(index: Int) {
+        // Since we get 20 shows per page, if we scroll to the last 10 shows we load another page
+        if index > totalShowsLoaded - 10, loadingShows == false {
+            currentPage += 1
+            loadShows()
+        }
     }
 }

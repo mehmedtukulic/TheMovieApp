@@ -52,6 +52,12 @@ final class ShowsFeedViewController: UIViewController {
                 return cell
             }.disposed(by: disposeBag)
         }
+
+        // MARK: - Infinite Scroll
+        showsCollectionView.rx.willDisplayCell
+                .subscribe(onNext: { [weak self] cell, indexPath in
+                    self?.viewModel.willDisplayShowAtIndex(index: indexPath.row)
+                }).disposed(by: disposeBag)
     }
 }
 

@@ -5,7 +5,7 @@
   - Navigate to the project folder through the terminal
   - execute pod install command
   - if pods are not installed on your machine, follow the installation guide at https://guides.cocoapods.org/using/getting-started.html
-  - Open TheMovieApp.xcodeworkspace
+  - Open TheMovieApp.xcworkspace
   - Select the desired simulator and run the app
 
 2. APP ARCHITECTURE:
@@ -25,4 +25,7 @@
    - KingFisher (Library used for async image downloading and caching, very useful when dealing with many calls, for example in collection views)
 
 I tried to use as few libraries as possible, since more libraries = more problems.
-If I had more time, I would implement async loading for the details fields on the movie and tvshow details fields and I would cover the app with the tests.
+If I had more time:
+I would implement async loading for the details fields on the movie and tvshow details fields
+I would cover the app with the tests.
+I would avoid some hardcoded strings

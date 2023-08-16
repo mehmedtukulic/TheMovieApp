@@ -16,6 +16,7 @@ enum ShowType {
 final class ShowsFeedViewModel {
     private(set) var genres = BehaviorSubject<[Genre]>(value: [])
     private(set) var movies = BehaviorSubject<[Movie]>(value: [])
+    private(set) var tvShows = BehaviorSubject<[TVShow]>(value: [])
     private(set) var selectedGenre: Genre?
 
     let type: ShowType
@@ -33,7 +34,7 @@ final class ShowsFeedViewModel {
     }
 
     private func loadGenres() {
-        repository.getGenres()
+        repository.getGenres(showType: type)
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] genreModel in
                 guard let self else { return }
@@ -57,14 +58,21 @@ final class ShowsFeedViewModel {
 
         repository.getMovies(genreId: genreId)
             .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] movieModel in
+            .subscribe(onSuccess: { [weak self] moviesModel in
                 guard let self else { return }
-                self.movies.onNext(movieModel.results)
+                self.movies.onNext(moviesModel.results)
             }).disposed(by: disposeBag)
     }
 
     private func loadTVShows() {
+        guard let genreId = selectedGenre?.id else { return }
 
+        repository.getTVShows(genreId: genreId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] showsModel in
+                guard let self else { return }
+                self.tvShows.onNext(showsModel.results)
+            }).disposed(by: disposeBag)
     }
 }
 

@@ -45,6 +45,12 @@ final class ShowsFeedViewController: UIViewController {
                 cell.setup(movie: item)
                 return cell
             }.disposed(by: disposeBag)
+        } else {
+            viewModel.tvShows.bind(to: showsCollectionView.rx.items) { collectionView, row, item in
+                let cell = collectionView.dequeueReusableCell(ofType: ShowViewCell.self, indexPath: IndexPath(row: row, section: 0))
+                cell.setup(tvShow: item)
+                return cell
+            }.disposed(by: disposeBag)
         }
     }
 }

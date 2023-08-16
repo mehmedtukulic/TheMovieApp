@@ -30,6 +30,7 @@
 		D0007DF82A8C3AE5006A8B19 /* MovieResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0007DF72A8C3AE5006A8B19 /* MovieResponseModel.swift */; };
 		D0007DFD2A8C3D3B006A8B19 /* ShowViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0007DFB2A8C3D3B006A8B19 /* ShowViewCell.swift */; };
 		D0007DFE2A8C3D3B006A8B19 /* ShowViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0007DFC2A8C3D3B006A8B19 /* ShowViewCell.xib */; };
+		D0007E002A8C4C3D006A8B19 /* TVShowResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0007DFF2A8C4C3D006A8B19 /* TVShowResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		D0007DF72A8C3AE5006A8B19 /* MovieResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieResponseModel.swift; sourceTree = "<group>"; };
 		D0007DFB2A8C3D3B006A8B19 /* ShowViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewCell.swift; sourceTree = "<group>"; };
 		D0007DFC2A8C3D3B006A8B19 /* ShowViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowViewCell.xib; sourceTree = "<group>"; };
+		D0007DFF2A8C4C3D006A8B19 /* TVShowResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowResponseModel.swift; sourceTree = "<group>"; };
 		DD7A30F6CC9D0339E8EDB729 /* Pods_TheMoviesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMoviesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -140,6 +142,7 @@
 			children = (
 				D0007DEC2A8C19BA006A8B19 /* GenreResponseModel.swift */,
 				D0007DF72A8C3AE5006A8B19 /* MovieResponseModel.swift */,
+				D0007DFF2A8C4C3D006A8B19 /* TVShowResponseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 			files = (
 				D0007DF52A8C28F3006A8B19 /* GenreViewCell.swift in Sources */,
 				D0007DEF2A8C28AA006A8B19 /* UICollectionView+Extension.swift in Sources */,
+				D0007E002A8C4C3D006A8B19 /* TVShowResponseModel.swift in Sources */,
 				D0007DF12A8C28BE006A8B19 /* UIView+Extension.swift in Sources */,
 				D0007DEB2A8C16E1006A8B19 /* ShowsRequests.swift in Sources */,
 				D0007DBC2A897D9C006A8B19 /* ViewController.swift in Sources */,

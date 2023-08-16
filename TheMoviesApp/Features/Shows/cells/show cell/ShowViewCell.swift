@@ -35,9 +35,18 @@ final class ShowViewCell: UICollectionViewCell {
         posterImageView.kf.setImage(with: movie.posterURL)
         containerView.backgroundColor = Colors.primaryColor
         titleLabel.text = "Title: \(movie.title)"
-        subtitleLabel.text = "Rating: \(movie.vote_average)"
+        subtitleLabel.text = "Rating: \(movie.voteAverage)"
         info1Label.text = "Budget"
         info2Label.text = "Revenue"
+    }
+
+    func setup(tvShow: TVShow) {
+        posterImageView.kf.setImage(with: tvShow.posterURL)
+        containerView.backgroundColor = Colors.secondaryColor
+        titleLabel.text = "Title: \(tvShow.name)"
+        subtitleLabel.text = "Rating: \(tvShow.voteAverage)"
+        info1Label.text = "Last Air Date: "
+        info2Label.text = "Last Episode Name: "
     }
 
 }

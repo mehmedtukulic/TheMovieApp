@@ -16,6 +16,14 @@ final class ShowsFeedViewController: UIViewController {
     private var disposeBag = DisposeBag()
     var viewModel: ShowsFeedViewModel!
 
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)),
+        for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = Colors.primaryColor
+        return refreshControl
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -58,6 +66,20 @@ final class ShowsFeedViewController: UIViewController {
                 .subscribe(onNext: { [weak self] cell, indexPath in
                     self?.viewModel.willDisplayShowAtIndex(index: indexPath.row)
                 }).disposed(by: disposeBag)
+
+        // MARK: - Pull to refresh
+        viewModel.refreshingData
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isRefreshing in
+                if !isRefreshing {
+                    self?.refreshControl.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        viewModel.refreshData()
     }
 }
 
@@ -92,5 +114,6 @@ private extension ShowsFeedViewController {
         layout.configuration.scrollDirection = .vertical
         showsCollectionView.collectionViewLayout = layout
         showsCollectionView.showsVerticalScrollIndicator = false
+        showsCollectionView.refreshControl = refreshControl
     }
 }

@@ -17,6 +17,7 @@ final class ShowsFeedViewModel {
     private(set) var genres = BehaviorSubject<[Genre]>(value: [])
     private(set) var movies = BehaviorSubject<[Movie]>(value: [])
     private(set) var tvShows = BehaviorSubject<[TVShow]>(value: [])
+    private(set) var refreshingData = BehaviorSubject<Bool>(value: false)
     private(set) var selectedGenre: Genre?
 
     private let repository: any ShowsRepositoryProtocol
@@ -78,6 +79,7 @@ final class ShowsFeedViewModel {
                 self.movies.onNext(lastMoviesAdded)
                 self.totalShowsLoaded = lastMoviesAdded.count
                 self.loadingShows = false
+                self.refreshingData.onNext(false)
             }).disposed(by: disposeBag)
     }
 
@@ -93,10 +95,12 @@ final class ShowsFeedViewModel {
                 self.tvShows.onNext(lastTVShowsAdded)
                 self.totalShowsLoaded = lastTVShowsAdded.count
                 self.loadingShows = false
+                self.refreshingData.onNext(false)
             }).disposed(by: disposeBag)
     }
 }
 
+// MARK: - Public methods
 extension ShowsFeedViewModel {
     func genreSelected(_ genre: Genre) {
         selectedGenre = genre
@@ -110,5 +114,11 @@ extension ShowsFeedViewModel {
             currentPage += 1
             loadShows()
         }
+    }
+
+    func refreshData() {
+        currentPage = 1
+        loadShows()
+        refreshingData.onNext(true)
     }
 }

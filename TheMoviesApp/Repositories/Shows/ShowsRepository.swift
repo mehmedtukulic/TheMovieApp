@@ -6,26 +6,34 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol ShowsRepositoryProtocol {
-    func getShows() async throws -> [String]
+    func getGenres() -> Single<GenreResponseModel>
+    func getMovies(genreId: Int) -> Single<MovieResponseModel>
+    func getTVShows(genreId: Int) -> Single<[String]>
 }
 
-class ShowsRepository: ShowsRepositoryProtocol {
-    enum RepositoryType {
-        case movie
-        case tv
+final class ShowsRepository: ShowsRepositoryProtocol {
+    let apiClient: any APIProtocol
+
+    init(apiClient: any APIProtocol = APIClient()) {
+        self.apiClient = apiClient
     }
 
-    let type: RepositoryType
-
-    init(type: RepositoryType) {
-        self.type = type
+    func getGenres() -> Single<GenreResponseModel> {
+        let request = ShowsRequests.movieGenres
+        return apiClient.makeRequest(URLSession.shared, request)
     }
 
-    func getShows() async throws -> [String] {
-        return []
+    func getMovies(genreId: Int) -> Single<MovieResponseModel> {
+        let request = ShowsRequests.movies(page: 1, genreId: genreId)
+        return apiClient.makeRequest(URLSession.shared, request)
     }
 
+    func getTVShows(genreId: Int) -> Single<[String]> {
+        let request = ShowsRequests.movies(page: 1, genreId: genreId)
+        return apiClient.makeRequest(URLSession.shared, request)
+    }
 
 }

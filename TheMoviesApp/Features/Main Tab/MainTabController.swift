@@ -19,8 +19,8 @@ final class MainTabController: UITabBarController {
 
     private func setupTabBar(){
         tabBar.backgroundColor = .white.withAlphaComponent(0.3)
-        tabBar.unselectedItemTintColor = Colors.primaryColor
-        tabBar.tintColor = Colors.tabItemsColor
+        tabBar.unselectedItemTintColor = .gray
+        tabBar.tintColor = Colors.primaryColor
     }
 
     private func loadTabViewControllers() {
@@ -33,7 +33,7 @@ final class MainTabController: UITabBarController {
 
     private func composeMoviesViewController() -> ShowsFeedViewController {
         let vc = ShowsFeedViewController()
-        vc.viewModel = ShowsFeedViewModel(repository: ShowsRepository(type: .movie))
+        vc.viewModel = ShowsFeedViewModel(repository: ShowsRepository(), type: .movie)
         vc.title = "Movie"
         vc.tabBarItem.image = UIImage(systemName: "stopwatch")
         return vc
@@ -41,7 +41,7 @@ final class MainTabController: UITabBarController {
 
     private func composeTvShowsViewController() -> ShowsFeedViewController {
         let vc = ShowsFeedViewController()
-        vc.viewModel = ShowsFeedViewModel(repository: ShowsRepository(type: .tv))
+        vc.viewModel = ShowsFeedViewModel(repository: ShowsRepository(), type: .tv)
         vc.title = "TV"
         vc.tabBarItem.image = UIImage(systemName: "stopwatch")
         return vc
